@@ -1,0 +1,22 @@
+{
+  "name": "grupos-rock-backend",
+  "version": "1.0.0",
+  "description": "Backend para la aplicación de Grupos de rock",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js"
+  },
+  "keywords": [
+    "backend",
+    "grupos",
+    "rock"
+  ],
+  "author": "Alvaro Bellmunt",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongoose": "^5.12.12",
+    "nodemon": "^2.0.7"
+  }
+}
