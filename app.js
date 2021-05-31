@@ -26,7 +26,7 @@ app.get("/buscargrupo/:arg", async(req, res) => {
 
 app.delete("/borrargrupo/:id", async(req, res) => {
   try{
-    await Grupo.remove({_id: req.params.id});
+    await Grupo.deleteOne({_id: req.params.id});
     res.send({message: req.params.id});
   } catch(err) {
     res.send({message: err});
