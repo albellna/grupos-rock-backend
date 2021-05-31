@@ -1,10 +1,7 @@
 const mongoose = require("mongoose");
 
 const Grupo = new mongoose.Schema({
-    id:{
-        type: Number,
-        required: true
-    },
+    id: Number,
     name:{
         type: String,
         required: true

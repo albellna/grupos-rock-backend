@@ -1,18 +1,39 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const Grupo = require("./model/grupo");
+var cors = require('cors');
 const app = express();
+app.use(cors());
 
 require("dotenv/config");
 
   app.use(express.json());
 
-app.get("/", async(req, res) => {
+app.get("/grupos", async(req, res) => {
   const resultado = await Grupo.find();
   res.send(resultado);
 });
 
-app.post("/crear_grupo", async(req, res) => {
+app.get("/grupo/:id", async(req, res) => {
+  const resultado = await Grupo.findOne({_id: req.params.id});
+  res.send(resultado);
+});
+
+app.get("/buscargrupo/:arg", async(req, res) => {
+  const resultado = await Grupo.find({name: new RegExp(req.params.arg, 'i')});
+  res.send(resultado);
+});
+
+app.delete("/borrargrupo/:id", async(req, res) => {
+  try{
+    await Grupo.remove({_id: req.params.id});
+    res.send({message: req.params.id});
+  } catch(err) {
+    res.send({message: err});
+  }
+});
+
+app.post("/creargrupo", async(req, res) => {
   try{
     const {name} = req.body;
     const miGrupo = new Grupo(req.body);
@@ -31,6 +52,27 @@ app.post("/crear_grupo", async(req, res) => {
   }
 });
 
+app.post("/actualizargrupo/:id", async(req, res) => {
+  try{
+    const datosBody = req.body;
+    const grupoExiste = await Grupo.findOne({_id: req.params.id});
+    
+    if(grupoExiste){
+      Grupo.updateOne({_id: req.params.id}, datosBody, err => {
+        if (err) throw err;
+      });
+      res.send({message: "Grupo con id "+req.params.id+" actualizado."});
+    } else {
+      return res.status(400).json({
+        ok: false,
+        msg: 'No existe el grupo con la id introducida'
+      });
+    }
+  } catch(err) {
+    res.send({message: err});
+  }
+});
+
 const client = mongoose.connect(process.env.DB_CONNECTION_STRING,
 { 
   useUnifiedTopology: true,
@@ -43,3 +85,4 @@ const client = mongoose.connect(process.env.DB_CONNECTION_STRING,
 app.listen(3000, () =>{
     console.log("Listening to 3000");
 });
+
