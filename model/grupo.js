@@ -8,7 +8,8 @@ const Grupo = new mongoose.Schema({
     },
     anyosActivos: String,
     miembros: String,
-    descripcion: String
+    descripcion: String,
+    video: String
 });
 
 module.exports = mongoose.model("Grupo", Grupo);
